@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 IP="127.0.0.1"
-HOST=`es2`
+HOST=`ubuntu-xenial`
 sed -i "/$IP/ s/.*/$IP\tlocalhost\t$HOST/g" /etc/hosts
 
 sudo apt-get update
@@ -32,7 +32,7 @@ sudo echo "http.cors.allow-origin: /https?:\/\/localhost(:[0-9]+)?/" >> /etc/ela
 sudo echo "script.inline: on" >> /etc/elasticsearch/elasticsearch.yml
 sudo echo "script.indexed: on" >> /etc/elasticsearch/elasticsearch.yml
 
-sudo /etc/init.d/elasticsearch start
+sudo systemctl restart elasticsearch
 
 sudo /usr/share/elasticsearch/bin/plugin install -b --verbose license
 sudo /usr/share/elasticsearch/bin/plugin install -b --verbose marvel-agent
@@ -45,17 +45,19 @@ sudo echo "elasticsearch.url: "http://localhost:9200"" >> /opt/kibana/config/kib
 sudo update-rc.d kibana defaults 95 10
 sudo /bin/systemctl daemon-reload
 sudo /bin/systemctl enable kibana.service
-sudo /etc/init.d/kibana restart
+sudo systemctl kibana restart
 #install and setup of sense and marvel
 sudo /opt/kibana/bin/kibana plugin --install elastic/sense
 sudo /opt/kibana/bin/kibana plugin --install elasticsearch/marvel/latest
 #this was was an odd one.. fix permissions for various reasons.
 sudo chown kibana:root /opt/kibana/optimize/.babelcache.json
+#install head
+sudo /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
 # restart everything just to make sure
-sudo /etc/init.d/elasticsearch restart
-sudo /etc/init.d/kibana restart
+sudo systemctl restart elasticsearch
+sudo systemctl restart kibana
 
-sudo /etc/init.d/elasticsearch restart
+sudo systemctl restart elasticsearch
 sleep 30
 #  Data Import for potential labs
 curl -XPOST 'localhost:9200/books/es/1' -d '{"title":"Elasticsearch Server", "published": 2013}'
@@ -66,8 +68,8 @@ curl -XPOST 'localhost:9200/books/solr/1' -d '{"title":"Apache Solr 4 Cookbook",
 curl -XPOST 'localhost:9200/books/solr/2' -d '{"title":"Solr Cookbook Third Edition", "published": 2015}'
 #import accounts data
 Echo "downloading file"
-curl -LOk -o accounts.zip 'https://github.com/bly2k/files/blob/master/accounts.zip?raw=true'
-unzip 'accounts.zip_raw=true'
-curl -XPOST 'localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
+git clone https://github.com/majere/IntroToES2016.git
+mv IntroToES2016/accounts.json .
+curl -XPOST 'http://localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
 
 
