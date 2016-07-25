@@ -69,7 +69,6 @@ sleep 30
 #import accounts data
 Echo "downloading file"
 git clone https://github.com/mmajere/IntroToES2016.git
-mv IntroToES2016/accounts.json .
 curl -XPOST 'http://localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
 
 
