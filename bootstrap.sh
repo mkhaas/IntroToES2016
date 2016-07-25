@@ -60,15 +60,15 @@ sudo systemctl restart kibana
 sudo systemctl restart elasticsearch
 sleep 30
 #  Data Import for potential labs
-curl -XPOST 'localhost:9200/books/es/1' -d '{"title":"Elasticsearch Server", "published": 2013}'
-curl -XPOST 'localhost:9200/books/es/2' -d '{"title":"Elasticsearch Server Second Edition", "published": 2014}'
-curl -XPOST 'localhost:9200/books/es/3' -d '{"title":"Mastering Elasticsearch", "published": 2013}'
-curl -XPOST 'localhost:9200/books/es/4' -d '{"title":"Mastering Elasticsearch Second Edition", "published": 2015}'
-curl -XPOST 'localhost:9200/books/solr/1' -d '{"title":"Apache Solr 4 Cookbook", "published": 2012}'
-curl -XPOST 'localhost:9200/books/solr/2' -d '{"title":"Solr Cookbook Third Edition", "published": 2015}'
+#curl -XPOST 'localhost:9200/books/es/1' -d '{"title":"Elasticsearch Server", "published": 2013}'
+#curl -XPOST 'localhost:9200/books/es/2' -d '{"title":"Elasticsearch Server Second Edition", "published": 2014}'
+#curl -XPOST 'localhost:9200/books/es/3' -d '{"title":"Mastering Elasticsearch", "published": 2013}'
+#curl -XPOST 'localhost:9200/books/es/4' -d '{"title":"Mastering Elasticsearch Second Edition", "published": 2015}'
+#curl -XPOST 'localhost:9200/books/solr/1' -d '{"title":"Apache Solr 4 Cookbook", "published": 2012}'
+#curl -XPOST 'localhost:9200/books/solr/2' -d '{"title":"Solr Cookbook Third Edition", "published": 2015}'
 #import accounts data
 Echo "downloading file"
-git clone https://github.com/majere/IntroToES2016.git
+git clone https://github.com/mmajere/IntroToES2016.git
 mv IntroToES2016/accounts.json .
 curl -XPOST 'http://localhost:9200/bank/account/_bulk?pretty' --data-binary "@accounts.json"
 
