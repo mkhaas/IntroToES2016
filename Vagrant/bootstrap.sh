@@ -48,8 +48,9 @@ sudo /usr/share/elasticsearch/bin/plugin install -b --verbose marvel-agent
 #Kibana setup
 echo "Kibana repo additions plus kibana service setup"
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo "deb http://packages.elastic.co/kibana/4.5/debian stable main" | sudo tee -a /etc/apt/sources.list
+echo "deb http://packages.elastic.co/kibana/4.6/debian stable main" | sudo tee -a /etc/apt/sources.list
 sudo apt-get update && sudo apt-get install kibana
+#https://download.elastic.co/kibana/kibana/kibana-4.6.1-amd64.deb
 sudo echo "elasticsearch.url: "http://localhost:9200"" >> /opt/kibana/config/kibana.yml
 sudo update-rc.d kibana defaults 95 10
 sudo /bin/systemctl daemon-reload
